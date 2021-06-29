@@ -9,6 +9,10 @@ import ksmart39.mybatis.domain.Member;
 
 @Mapper
 public interface MemberMapper {
+	//로그인 이력 조회
+	public List<Map<String, Object>> getLoginHistoryList(Map<String, Object> paramMap);
+	//로그인 테이블 행의 갯수
+	public int getLoginHistoryCount();
 	//회원 테이블
 	public int removeMemberById(String memberId);
 	//상품 테이블

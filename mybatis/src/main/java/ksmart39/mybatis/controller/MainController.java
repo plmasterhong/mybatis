@@ -1,13 +1,25 @@
 package ksmart39.mybatis.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import ksmart39.mybatis.service.MemberService;
 
 @Controller
 public class MainController {
+	private final MemberService memberService;
+	
+	public MainController(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
 	
 	/**
 	 * PSA(Portable Service Abstraction) : 환경의 변화와 관계없이 일관된 방식의 기술 접근 환경을 제공하려는 추상화 구조
@@ -29,7 +41,7 @@ public class MainController {
      *    응답 view를 렌더링하는 역할   
      * 5. 해당 뷰 템플릿에서 전달된  model 속 객체 사용가능
 	 * 
-	 */
+	 */	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView main(Model model) {
@@ -39,6 +51,33 @@ public class MainController {
 		mav.setViewName("main");
 		return mav;
 	}
+	
+	@GetMapping("/loginHistory")
+	public String loginHistory(Model model
+							  ,@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) {
+		
+		Map<String, Object> resultMap = memberService.getLoginHistoryList(currentPage);
+		
+		model.addAttribute("title", 				"로그인이력");
+		model.addAttribute("currentPage", 			currentPage);
+		model.addAttribute("lastPage", 				resultMap.get("lastPage"));
+		model.addAttribute("loginHistoryList", 		resultMap.get("loginHistoryList"));
+		model.addAttribute("pageStartNum", 			resultMap.get("pageStartNum"));
+		model.addAttribute("pageEndNum", 			resultMap.get("pageEndNum"));
+		
+		return "login/loginHistory";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

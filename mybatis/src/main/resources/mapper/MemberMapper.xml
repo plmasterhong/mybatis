@@ -13,6 +13,23 @@
 		<result property="memberAddr" 		column="m_addr"/>
 		<result property="memberRegDate" 	column="m_reg_date"/>
 	</resultMap>
+	<select id="getLoginHistoryCount" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM 
+			tb_login;
+	</select>
+	
+	<select id="getLoginHistoryList" parameterType="map" resultType="map">
+		SELECT 
+			 login_num		AS loginNum
+			,login_id		AS loginId
+			,login_date		AS loginDate
+			,logout_date	AS logoutDate
+		FROM 
+			tb_login
+		LIMIT #{rowStart}, #{rowPerPage};
+	</select>
 	
 	<delete id="removeLoginById" parameterType="String">
 		DELETE

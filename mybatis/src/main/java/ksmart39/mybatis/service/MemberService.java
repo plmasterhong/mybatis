@@ -41,6 +41,53 @@ public class MemberService {
 		//System.out.println("====================================");
 	}
 	
+	// 페이징 (로그인이력조회)
+	public Map<String, Object> getLoginHistoryList(int currentPage){
+		
+		//보여줄 행의 갯수
+		int rowPerPage = 10;
+		
+		//table에서 보여질 행의 시작점 초기화
+		int rowStart = 0;
+		
+		//페이지 번호 초기화
+		int pageStartNum = 1;
+		int pageEndNum = 10;
+				
+		//rowStart = 페이지알고리즘(현재페이지 - 1) * 보여줄 행의 갯수
+		rowStart = (currentPage - 1) * rowPerPage;
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("rowStart", rowStart);
+		paramMap.put("rowPerPage", rowPerPage);
+		
+		List<Map<String, Object>> loginHistoryList = memberMapper.getLoginHistoryList(paramMap);
+		
+		//테이블(로그인이력)의 총 행의 갯수
+		double rowCount = memberMapper.getLoginHistoryCount();
+		
+		// 마지막페이지 (전체 행의 갯수에서 보여줄 행의 갯수를 나눈 몫에 올림)
+		int lastPage = (int) Math.ceil(rowCount/rowPerPage); 
+		
+		if(currentPage > 6) {
+			pageStartNum = currentPage - 5;
+			pageEndNum = currentPage + 4;
+			
+			if(pageEndNum >= lastPage) {
+				pageStartNum = lastPage - 9;
+				pageEndNum = lastPage;
+			}
+		}
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("loginHistoryList", loginHistoryList);
+		resultMap.put("lastPage", lastPage);
+		resultMap.put("pageStartNum", pageStartNum);
+		resultMap.put("pageEndNum", pageEndNum);
+		
+		return resultMap;
+	}
+	
 	public Map<String, Object> loginMember(String memberId, String memberPw) {
 		//로그인 여부
 		boolean loginCheck = false;

@@ -9,6 +9,7 @@
 		<a th:if="${session.SLEVEL == '1' or session.SLEVEL == '2'}" th:href="@{/addGoods}">03.상품등록</a>
 		<a th:if="${session.SID ne null}" href="#">04.상품전체검색</a>
 		<a th:if="${session.SID eq null}" th:href="@{/login}">05.로그인</a>
+		<a th:if="${session.SLEVEL == '1'}" th:href="@{/loginHistory}">07.로그인이력</a>
 		<a th:unless="${session.SID eq null}" th:href="@{/logout}">06.로그아웃</a>
 		
 		<br><br>
